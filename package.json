@@ -1,0 +1,18 @@
+{
+  "name": "weui-gleam",
+  "version": "1.0.0",
+  "description": "weui miniprogram but in gleam",
+  "scripts": {
+    "build": "gleam run -m build",
+    "watch": "WECHAT_BUILD_WATCH=1 gleam run -m build",
+    "purge": "gleam clean && rm -rf dist/*",
+    "clean": "rm -rf dist/*"
+  },
+  "author": "Kai WU",
+  "license": "MIT",
+  "dependencies": {
+    "esbuild": "^0.23.0",
+    "esbuild-plugin-less": "^1.3.8",
+    "less": "^4.2.0"
+  }
+}
