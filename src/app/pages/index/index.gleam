@@ -2,6 +2,10 @@ import gleam/io
 import gleam/string
 import wechat/object.{type JsObject}
 
+pub fn on_theme_change(_theme: String) -> Nil {
+  Nil
+}
+
 fn on_load(o: JsObject) -> Nil {
   o |> object.stringify |> string.append("hello gleam: ", _) |> io.println
 }
