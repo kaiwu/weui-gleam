@@ -1,6 +1,43 @@
 import { build, context } from 'esbuild'
 import { Ok, Error } from "./gleam.mjs"
-import { lessLoader } from 'esbuild-plugin-less';
+
+import path from 'path';
+import less from 'less';
+import fs from 'fs/promises';
+
+const wxss = {
+  name: 'wxss-plugin',
+  setup(build) {
+    build.onLoad({ filter: /\.less$/ }, async (args) => {
+      // 1. Read the LESS file
+      const source = await fs.readFile(args.path, 'utf8');
+
+      // 2. Transform ~ imports (CORRECT regex)
+      const finalSource = source.replace(
+        /@import\s+['"]~([^'"]+)['"]/g,
+        '@import "$1"'
+      );
+
+      // 4. Compile with LESS
+      const result = await less.render(finalSource, {
+        filename: args.path,
+        paths: [
+          path.resolve('node_modules'),
+          path.dirname(args.path),
+          process.cwd()
+        ],
+        javascriptEnabled: false,
+        math: 'always'
+      });
+
+      // 5. Return as CSS
+      return {
+        contents: result.css,
+        loader: 'css'
+      };
+    });
+  }
+};
 
 export function bundle_build(entry, out) {
   return new Promise(resolve => {
@@ -53,10 +90,9 @@ export function copy_build(src, out) {
 
 export function less_build(css, out) {
   return new Promise(resolve => {
-      let less = lessLoader({math:'always'}, {})
       build({
         entryPoints: [css],
-        plugins: [less],
+        plugins: [wxss],
         loader: {'.less': 'css'},
         outfile: out,
       }).then(function(r){
@@ -127,10 +163,9 @@ export function copy_watch(src, out) {
 
 export function less_watch(css, out) {
   return new Promise(resolve => {
-      let less = lessLoader({math:'always'}, {})
       context({
         entryPoints: [css],
-        plugins: [less],
+        plugins: [wxss],
         loader: {'.less': 'css'},
         outfile: out,
       }).then(function(ctx){
