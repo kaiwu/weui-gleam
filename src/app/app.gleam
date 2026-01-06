@@ -31,11 +31,9 @@ fn change_theme(o: JsObject) -> Nil {
       decode.new_primitive_decoder("GlobalData", globaldata_from_dynamic),
     )
     |> result.unwrap(GlobalData([], "light"))
-  let d1 = GlobalData(..d0, theme: theme)
+  let _ = app.get_app() |> object.mutate("data", GlobalData(..d0, theme: theme))
 
   list.each(d0.listeners, fn(f) { f(theme) })
-  app.get_app() |> object.mutate("data", d1)
-  Nil
 }
 
 fn on_launch() -> Nil {

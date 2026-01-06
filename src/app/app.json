@@ -4,10 +4,26 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#000",
-    "backgroundColor": "#fff",
-    "backgroundColorTop": "#000",
-    "navigationBarTitleText": "Gleam",
-    "navigationBarTextStyle":"white"
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "backgroundColor": "#f8f8f8",
+    "navigationBarTitleText": "Gleam WeUI",
+    "navigationBarTextStyle":"black"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true,
+  "style": "v2",
+  "darkmode": true,
+  "lazyCodeLoading": "requiredComponents",
+  "renderer": "skyline",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "defaultContentBox": true
+    }
   }
 }
