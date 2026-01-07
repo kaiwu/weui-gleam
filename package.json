@@ -11,7 +11,7 @@
   "author": "Kai WU",
   "license": "MIT",
   "dependencies": {
-    "esbuild": "^0.27.0",
+    "esbuild": "^0.26.0",
     "less": "^4.5.0",
     "weui-wxss":"^2.6.25"
   }
