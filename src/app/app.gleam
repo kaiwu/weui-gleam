@@ -12,7 +12,7 @@ pub type GlobalData {
   GlobalData(debug: Bool, theme: JsObject)
 }
 
-@external(javascript, "../app_ffi.mjs", "globaldata_from_dynamic")
+@external(javascript, "../app_ffi.mjs", "generic_decoder")
 fn globaldata_from_dynamic(d: Dynamic) -> Result(GlobalData, GlobalData)
 
 fn change_theme(theme: JsObject) -> Nil {
@@ -27,13 +27,13 @@ fn change_theme(theme: JsObject) -> Nil {
   Nil
 }
 
-fn set_theme(_) -> Nil {
-  let p = page.current_page()
+fn set_theme(p: String) -> Nil {
+  let cp = page.current_page()
   let theme =
     app.get_app()
     |> object.paths("data.theme")
     |> result.unwrap(object.literal([#("theme", "light")]))
-  let _ = page.set_data(p, theme, fn() { Nil })
+  let _ = page.set_data(cp, theme, fn() { io.println(p <> " set theme") })
   Nil
 }
 
