@@ -73,9 +73,9 @@ fn file_path(path: String, p: String, t: String) -> String {
   string.concat([path, p, "/", p, ".", t])
 }
 
-fn index_path(path: String, p: String, t: String) -> String {
-  string.concat([path, p, "/", "index.", t])
-}
+// fn index_path(path: String, p: String, t: String) -> String {
+//   string.concat([path, p, "/", "index.", t])
+// }
 
 fn page_content(p: String) -> String {
   string.concat([
@@ -167,44 +167,44 @@ fn component_assets(p: String, watch: Bool) -> List(Asset) {
     True -> [
       Asset(
         component_content(p),
-        index_path(dist <> "/components/", p, "js"),
+        file_path(dist <> "/components/", p, "js"),
         js_watch,
       ),
       Asset(
         file_path(src <> "components/", p, "json"),
-        index_path(dist <> "components/", p, "json"),
+        file_path(dist <> "components/", p, "json"),
         copy_watch,
       ),
       Asset(
         file_path(src <> "components/", p, "wxml"),
-        index_path(dist <> "components/", p, "wxml"),
+        file_path(dist <> "components/", p, "wxml"),
         copy_watch,
       ),
       Asset(
         file_path(src <> "components/", p, "less"),
-        index_path(dist <> "components/", p, "wxss"),
+        file_path(dist <> "components/", p, "wxss"),
         less_watch,
       ),
     ]
     False -> [
       Asset(
         component_content(p),
-        index_path(dist <> "/components/", p, "js"),
+        file_path(dist <> "/components/", p, "js"),
         js_build,
       ),
       Asset(
         file_path(src <> "components/", p, "json"),
-        index_path(dist <> "components/", p, "json"),
+        file_path(dist <> "components/", p, "json"),
         copy_build,
       ),
       Asset(
         file_path(src <> "components/", p, "wxml"),
-        index_path(dist <> "components/", p, "wxml"),
+        file_path(dist <> "components/", p, "wxml"),
         copy_build,
       ),
       Asset(
         file_path(src <> "components/", p, "less"),
-        index_path(dist <> "components/", p, "wxss"),
+        file_path(dist <> "components/", p, "wxss"),
         less_build,
       ),
     ]

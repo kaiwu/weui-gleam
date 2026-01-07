@@ -1,10 +1,12 @@
 import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/io
+import gleam/javascript/promise
 import gleam/list
 import gleam/result
 
 import wechat/app
+import wechat/base
 import wechat/object.{type JsObject}
 import wechat/page
 
@@ -72,10 +74,11 @@ fn kind_toggle(e: JsObject) -> Nil {
       decode.list(decoder),
     ))
     list.try_fold(block_list, [], fn(ls, b) {
-      let ns = case b {
-        Block(id, _, _, _) if id == oid ->
-          list.append(ls, [Block(..b, open: !b.open)])
-        Block(_, _, _, _) -> list.append(ls, [Block(..b, open: False)])
+      let b0 = Block(..b, open: !b.open)
+      let b1 = Block(..b, open: False)
+      let ns = case b.id {
+        id if id == oid -> list.append(ls, [b0])
+        _ -> list.append(ls, [b1])
       }
       Ok(ns)
     })
@@ -83,19 +86,36 @@ fn kind_toggle(e: JsObject) -> Nil {
   case r {
     Ok(bs) -> {
       let cp = page.current_page()
-      let _ = page.set_data(cp, object.literal([#("list", bs)]), fn() { Nil })
-      io.println("toggle kind done")
+      let ls = object.literal([#("list", bs)])
+      let _ = page.set_data(cp, ls, fn() { io.println("toggle kind done") })
+      Nil
     }
     Error(error) ->
       case error {
-        object.WechatError(m) -> io.println("toggle kind error: " <> m)
+        object.WechatError(m) -> io.println(m)
         _ -> io.println("toggle kind error")
       }
   }
 }
 
+fn open_page(e: JsObject) -> Nil {
+  let _ = {
+    use p <- promise.try_await(
+      promise.resolve(object.path_field(
+        e,
+        "currentTarget.dataset.page",
+        decode.string,
+      )),
+    )
+    let dest = "pages/" <> p <> "/" <> p
+    base.navigate_to(dest, fn() { io.println("navigated to " <> p) })
+  }
+  Nil
+}
+
 pub fn page() -> JsObject {
   object.literal([
+    #("openPage", open_page),
     #("kingToggle", kind_toggle),
   ])
   |> object.set("onShow", on_show)

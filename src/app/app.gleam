@@ -57,6 +57,7 @@ pub fn app() -> JsObject {
     #("onHide", on_hide),
   ])
   |> object.set("set_theme", set_theme)
+  |> object.set("change_theme", change_theme)
   |> object.set(
     "data",
     GlobalData(debug: False, theme: object.literal([#("theme", "light")])),

@@ -7,7 +7,9 @@ import wechat/page.{run_page}
 
 import app/app
 
-// import app/components/basic/basic
+import app/components/cell/cell
+import app/components/cells/cells
+import app/components/navigation_bar/navigation_bar
 import app/pages/index/index
 
 pub type Constructor =
@@ -22,8 +24,11 @@ pub fn pages() -> List(#(String, Constructor)) {
 }
 
 pub fn components() -> List(#(String, Constructor)) {
-  //[#("basic", basic.component)]
-  []
+  [
+    #("cell", cell.component),
+    #("cells", cells.component),
+    #("navigation_bar", navigation_bar.component),
+  ]
 }
 
 pub fn page(ps: List(#(String, Constructor)), p: String) -> Result(Nil, Nil) {
