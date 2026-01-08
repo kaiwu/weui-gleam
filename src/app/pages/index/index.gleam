@@ -2,6 +2,7 @@ import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/io
 import gleam/javascript/promise
+import gleam/javascript/array
 import gleam/list
 import gleam/result
 
@@ -19,7 +20,7 @@ fn block_from_dynamic(d: Dynamic) -> Result(Block, Block)
 
 fn init() -> JsObject {
   object.new()
-  |> object.set("list", [
+  |> object.set("list", array.from_list([
     Block(id: "form", name: "表单", open: False, pages: [
       "cell",
       "slideview",
@@ -48,7 +49,7 @@ fn init() -> JsObject {
     ]),
     Block(id: "nav", name: "导航相关", open: False, pages: ["navigation", "tabbar"]),
     Block(id: "search", name: "搜索相关", open: False, pages: ["searchbar"]),
-  ])
+  ]))
 }
 
 fn on_show() -> Nil {
@@ -86,7 +87,7 @@ fn kind_toggle(e: JsObject) -> Nil {
   case r {
     Ok(bs) -> {
       let cp = page.current_page()
-      let ls = object.literal([#("list", bs)])
+      let ls = object.literal([#("list", array.from_list(bs))])
       let _ = page.set_data(cp, ls, fn() { io.println("toggle kind done") })
       Nil
     }
@@ -116,7 +117,7 @@ fn open_page(e: JsObject) -> Nil {
 pub fn page() -> JsObject {
   object.literal([
     #("openPage", open_page),
-    #("kingToggle", kind_toggle),
+    #("kindToggle", kind_toggle),
   ])
   |> object.set("onShow", on_show)
   |> object.set("data", init())

@@ -39,7 +39,7 @@
         </view>
         <view class="page__ft">
             <view class="ft-img-cnt" bindtap="themeToggle">
-                <image src="images/icon_footer.png" style="width: 84px; height: 19px;"></image>
+                <image src="../../images/icon_footer.png" style="width: 84px; height: 19px;"></image>
             </view>
         </view>
     </scroll-view>
