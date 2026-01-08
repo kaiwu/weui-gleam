@@ -1,5 +1,6 @@
 import { build, context } from 'esbuild'
 import { Ok, Error } from "./gleam.mjs"
+import copyStaticFiles from 'esbuild-copy-static-files'
 
 import path from 'path';
 import less from 'less';
@@ -88,6 +89,27 @@ export function copy_build(src, out) {
   })
 }
 
+export function dir_build(src, out) {
+  return new Promise(resolve => {
+      build({
+        plugins: [
+          copyStaticFiles({
+            src: src,
+            dest: out,
+            dereference: true,
+            errorOnExist: false,
+            preserveTimestamps: true,
+            recursive: true,
+          })
+        ],
+      }).then(function(r){
+        resolve(new Ok(undefined))
+      }).catch(function(e){
+        resolve(new Error(JSON.stringify(e)))
+      })
+  })
+}
+
 export function less_build(css, out) {
   return new Promise(resolve => {
       build({
@@ -153,6 +175,30 @@ export function copy_watch(src, out) {
       }).then(function(ctx){
         ctx.watch()
         console.log(`watching json/wxml ${src}...`)
+      }).then(function(){
+        resolve(new Ok(undefined))
+      }).catch(function(e){
+        resolve(new Error(JSON.stringify(e)))
+      })
+  })
+}
+
+export function dir_watch(src, out) {
+  return new Promise(resolve => {
+      context({
+        plugins: [
+          copyStaticFiles({
+            src: src,
+            dest: out,
+            dereference: true,
+            errorOnExist: false,
+            preserveTimestamps: true,
+            recursive: true,
+          })
+        ],
+      }).then(function(ctx){
+        ctx.watch()
+        console.log(`watching images ${src}...`)
       }).then(function(){
         resolve(new Ok(undefined))
       }).catch(function(e){

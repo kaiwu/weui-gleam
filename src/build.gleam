@@ -24,6 +24,9 @@ pub fn copy_build(
   outfile o: String,
 ) -> Promise(Result(Nil, String))
 
+@external(javascript, "./build_ffi.mjs", "dir_build")
+pub fn dir_build(src s: String, dest o: String) -> Promise(Result(Nil, String))
+
 @external(javascript, "./build_ffi.mjs", "less_build")
 pub fn less_build(
   less f: String,
@@ -47,6 +50,9 @@ pub fn copy_watch(
   json f: String,
   outfile o: String,
 ) -> Promise(Result(Nil, String))
+
+@external(javascript, "./build_ffi.mjs", "dir_watch")
+pub fn dir_watch(src s: String, dest o: String) -> Promise(Result(Nil, String))
 
 @external(javascript, "./build_ffi.mjs", "less_watch")
 pub fn less_watch(
@@ -106,11 +112,13 @@ fn app_assets(watch: Bool) -> List(Asset) {
       Asset(app_content, dist <> "app.js", js_watch),
       Asset(src <> "app.json", dist <> "app.json", copy_watch),
       Asset(src <> "app.less", dist <> "app.wxss", less_watch),
+      Asset(src <> "images", dist <> "images", dir_watch),
     ]
     False -> [
       Asset(app_content, dist <> "app.js", js_build),
       Asset(src <> "app.json", dist <> "app.json", copy_build),
       Asset(src <> "app.less", dist <> "app.wxss", less_build),
+      Asset(src <> "images", dist <> "images", dir_build),
     ]
   }
 }

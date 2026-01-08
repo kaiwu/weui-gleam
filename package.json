@@ -13,6 +13,7 @@
   "dependencies": {
     "esbuild": "^0.26.0",
     "less": "^4.5.0",
-    "weui-wxss":"^2.6.25"
+    "weui-wxss":"^2.6.25",
+    "esbuild-copy-static-files":"^0.1.0"
   }
 }
