@@ -1,8 +1,8 @@
 import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/io
-import gleam/javascript/promise
 import gleam/javascript/array
+import gleam/javascript/promise
 import gleam/list
 import gleam/result
 
@@ -15,48 +15,62 @@ type Block {
   Block(id: String, name: String, open: Bool, pages: List(String))
 }
 
+type ChangeTheme =
+  fn(JsObject) -> Nil
+
+type SetTheme =
+  fn(String) -> Nil
+
 @external(javascript, "../../../app_ffi.mjs", "generic_decoder")
 fn block_from_dynamic(d: Dynamic) -> Result(Block, Block)
 
+@external(javascript, "../../../app_ffi.mjs", "generic_decoder")
+fn change_theme_from_dynamic(d: Dynamic) -> Result(ChangeTheme, ChangeTheme)
+
+@external(javascript, "../../../app_ffi.mjs", "generic_decoder")
+fn set_theme_from_dynamic(d: Dynamic) -> Result(SetTheme, SetTheme)
+
 fn init() -> JsObject {
   object.new()
-  |> object.set("list", array.from_list([
-    Block(id: "form", name: "表单", open: False, pages: [
-      "cell",
-      "slideview",
-      "form",
-      "uploader",
+  |> object.set(
+    "list",
+    array.from_list([
+      Block(id: "form", name: "表单", open: False, pages: [
+        "cell",
+        "slideview",
+        "form",
+        "uploader",
+      ]),
+      Block(id: "widget", name: "基础组件", open: False, pages: [
+        "article",
+        "icons",
+        "badge",
+        "flex",
+        "footer",
+        "gallery",
+        "grid",
+        "loadmore",
+        "loading",
+        "panel",
+        "preview",
+      ]),
+      Block(id: "feedback", name: "操作反馈", open: False, pages: [
+        "dialog",
+        "msg",
+        "half-screen-dialog",
+        "actionsheet",
+        "toptips",
+      ]),
+      Block(id: "nav", name: "导航相关", open: False, pages: [
+        "navigation",
+        "tabbar",
+      ]),
+      Block(id: "search", name: "搜索相关", open: False, pages: ["searchbar"]),
     ]),
-    Block(id: "widget", name: "基础组件", open: False, pages: [
-      "article",
-      "icons",
-      "badge",
-      "flex",
-      "footer",
-      "gallery",
-      "grid",
-      "loadmore",
-      "loading",
-      "panel",
-      "preview",
-    ]),
-    Block(id: "feedback", name: "操作反馈", open: False, pages: [
-      "dialog",
-      "msg",
-      "half-screen-dialog",
-      "actionsheet",
-      "toptips",
-    ]),
-    Block(id: "nav", name: "导航相关", open: False, pages: ["navigation", "tabbar"]),
-    Block(id: "search", name: "搜索相关", open: False, pages: ["searchbar"]),
-  ]))
+  )
 }
 
 fn on_show() -> Nil {
-  let _ =
-    app.get_app()
-    |> object.get("set_theme")
-    |> result.try(object.call(_, "index"))
   Nil
 }
 
@@ -114,11 +128,37 @@ fn open_page(e: JsObject) -> Nil {
   Nil
 }
 
+fn theme_toggle() -> Nil {
+  let _ = {
+    use t0 <- result.try({
+      use t <- result.try(object.path_field(
+        app.get_app(),
+        "data.theme",
+        decode.string,
+      ))
+      Ok(case t {
+        "light" -> object.literal([#("theme", "dark")])
+        _ -> object.literal([#("theme", "light")])
+      })
+    })
+    let a0 = app.get_app()
+    let d0 = decode.new_primitive_decoder("Change", change_theme_from_dynamic)
+    let d1 = decode.new_primitive_decoder("Set", set_theme_from_dynamic)
+
+    use change_theme <- result.try(object.field(a0, "change_theme", d0))
+    use set_theme <- result.try(object.field(a0, "set_theme", d1))
+    let _ = change_theme(t0)
+    Ok(set_theme("index"))
+  }
+  Nil
+}
+
 pub fn page() -> JsObject {
   object.literal([
     #("openPage", open_page),
     #("kindToggle", kind_toggle),
   ])
   |> object.set("onShow", on_show)
+  |> object.set("themeToggle", theme_toggle)
   |> object.set("data", init())
 }

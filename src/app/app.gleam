@@ -9,31 +9,42 @@ import wechat/object.{type JsObject}
 import wechat/page
 
 pub type GlobalData {
-  GlobalData(debug: Bool, theme: JsObject)
+  GlobalData(debug: Bool, theme: String)
 }
 
 @external(javascript, "../app_ffi.mjs", "generic_decoder")
 fn globaldata_from_dynamic(d: Dynamic) -> Result(GlobalData, GlobalData)
 
 fn change_theme(theme: JsObject) -> Nil {
-  let d0 =
-    app.get_app()
-    |> object.field(
+  let _ = {
+    use t <- result.try(object.field(theme, "theme", decode.string))
+    io.println("change theme to: " <> t)
+
+    use g <- result.try(object.field(
+      app.get_app(),
       "data",
       decode.new_primitive_decoder("GlobalData", globaldata_from_dynamic),
-    )
-    |> result.unwrap(GlobalData(False, theme))
-  let _ = app.get_app() |> object.mutate("data", GlobalData(..d0, theme: theme))
+    ))
+    let r = case g.theme {
+      t0 if t0 != t -> app.get_app() |> object.mutate("data.theme", t)
+      _ -> object.new()
+    }
+    Ok(r)
+  }
   Nil
 }
 
 fn set_theme(p: String) -> Nil {
-  let cp = page.current_page()
-  let theme =
-    app.get_app()
-    |> object.paths("data.theme")
-    |> result.unwrap(object.literal([#("theme", "light")]))
-  let _ = page.set_data(cp, theme, fn() { io.println(p <> " set theme") })
+  let _ = {
+    let cp = page.current_page()
+    use theme <- result.try(object.path_field(
+      app.get_app(),
+      "data.theme",
+      decode.string,
+    ))
+    let t = object.literal([#("theme", theme)])
+    Ok(page.set_data(cp, t, fn() { io.println(p <> " set theme") }))
+  }
   Nil
 }
 
@@ -58,8 +69,5 @@ pub fn app() -> JsObject {
   ])
   |> object.set("set_theme", set_theme)
   |> object.set("change_theme", change_theme)
-  |> object.set(
-    "data",
-    GlobalData(debug: False, theme: object.literal([#("theme", "light")])),
-  )
+  |> object.set("data", GlobalData(debug: False, theme: "light"))
 }
