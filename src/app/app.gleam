@@ -34,7 +34,7 @@ fn change_theme(theme: JsObject) -> Nil {
   Nil
 }
 
-fn set_theme(p: String) -> Nil {
+fn set_theme() -> Nil {
   let _ = {
     let cp = page.current_page()
     use theme <- result.try(object.path_field(
@@ -43,7 +43,7 @@ fn set_theme(p: String) -> Nil {
       decode.string,
     ))
     let t = object.literal([#("theme", theme)])
-    Ok(page.set_data(cp, t, fn() { io.println(p <> " set theme") }))
+    Ok(page.set_data(cp, t, fn() { Nil }))
   }
   Nil
 }

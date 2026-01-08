@@ -1,77 +1,96 @@
 import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/io
-import gleam/javascript/array
+import gleam/javascript/array.{type Array}
 import gleam/javascript/promise
 import gleam/list
 import gleam/result
 
 import wechat/app
 import wechat/base
-import wechat/object.{type JsObject}
+import wechat/object.{
+  type JsObject, type WechatCallback, type WechatResultCallback,
+}
 import wechat/page
 
 type Block {
-  Block(id: String, name: String, open: Bool, pages: List(String))
+  Block(id: String, name: String, open: Bool, pages: Array(String))
 }
-
-type ChangeTheme =
-  fn(JsObject) -> Nil
-
-type SetTheme =
-  fn(String) -> Nil
 
 @external(javascript, "../../../app_ffi.mjs", "generic_decoder")
 fn block_from_dynamic(d: Dynamic) -> Result(Block, Block)
 
 @external(javascript, "../../../app_ffi.mjs", "generic_decoder")
-fn change_theme_from_dynamic(d: Dynamic) -> Result(ChangeTheme, ChangeTheme)
+fn change_theme(
+  d: Dynamic,
+) -> Result(WechatResultCallback, WechatResultCallback)
 
 @external(javascript, "../../../app_ffi.mjs", "generic_decoder")
-fn set_theme_from_dynamic(d: Dynamic) -> Result(SetTheme, SetTheme)
+fn set_theme(d: Dynamic) -> Result(WechatCallback, WechatCallback)
 
 fn init() -> JsObject {
   object.new()
   |> object.set(
     "list",
     array.from_list([
-      Block(id: "form", name: "表单", open: False, pages: [
-        "cell",
-        "slideview",
-        "form",
-        "uploader",
-      ]),
-      Block(id: "widget", name: "基础组件", open: False, pages: [
-        "article",
-        "icons",
-        "badge",
-        "flex",
-        "footer",
-        "gallery",
-        "grid",
-        "loadmore",
-        "loading",
-        "panel",
-        "preview",
-      ]),
-      Block(id: "feedback", name: "操作反馈", open: False, pages: [
-        "dialog",
-        "msg",
-        "half-screen-dialog",
-        "actionsheet",
-        "toptips",
-      ]),
-      Block(id: "nav", name: "导航相关", open: False, pages: [
-        "navigation",
-        "tabbar",
-      ]),
-      Block(id: "search", name: "搜索相关", open: False, pages: ["searchbar"]),
+      Block(
+        id: "form",
+        name: "表单",
+        open: False,
+        pages: array.from_list([
+          "cell",
+          "slideview",
+          "form",
+          "uploader",
+        ]),
+      ),
+      Block(
+        id: "widget",
+        name: "基础组件",
+        open: False,
+        pages: array.from_list([
+          "article",
+          "icons",
+          "badge",
+          "flex",
+          "footer",
+          "gallery",
+          "grid",
+          "loadmore",
+          "loading",
+          "panel",
+          "preview",
+        ]),
+      ),
+      Block(
+        id: "feedback",
+        name: "操作反馈",
+        open: False,
+        pages: array.from_list([
+          "dialog",
+          "msg",
+          "half-screen-dialog",
+          "actionsheet",
+          "toptips",
+        ]),
+      ),
+      Block(
+        id: "nav",
+        name: "导航相关",
+        open: False,
+        pages: array.from_list([
+          "navigation",
+          "tabbar",
+        ]),
+      ),
+      Block(
+        id: "search",
+        name: "搜索相关",
+        open: False,
+        pages: array.from_list(["searchbar"]),
+      ),
     ]),
   )
-}
-
-fn on_show() -> Nil {
-  Nil
 }
 
 fn kind_toggle(e: JsObject) -> Nil {
@@ -113,6 +132,31 @@ fn kind_toggle(e: JsObject) -> Nil {
   }
 }
 
+fn theme_toggle(_e: JsObject) -> Nil {
+  let _ = {
+    use t0 <- result.try({
+      use t <- result.try(object.path_field(
+        app.get_app(),
+        "data.theme",
+        decode.string,
+      ))
+      Ok(case t {
+        "light" -> object.literal([#("theme", "dark")])
+        _ -> object.literal([#("theme", "light")])
+      })
+    })
+    let a0 = app.get_app()
+    let d0 = decode.new_primitive_decoder("Change", change_theme)
+    let d1 = decode.new_primitive_decoder("Set", set_theme)
+
+    use ct <- result.try(object.field(a0, "change_theme", d0))
+    use st <- result.try(object.field(a0, "set_theme", d1))
+    ct(t0)
+    Ok(st())
+  }
+  Nil
+}
+
 fn open_page(e: JsObject) -> Nil {
   let _ = {
     use p <- promise.try_await(
@@ -128,37 +172,11 @@ fn open_page(e: JsObject) -> Nil {
   Nil
 }
 
-fn theme_toggle() -> Nil {
-  let _ = {
-    use t0 <- result.try({
-      use t <- result.try(object.path_field(
-        app.get_app(),
-        "data.theme",
-        decode.string,
-      ))
-      Ok(case t {
-        "light" -> object.literal([#("theme", "dark")])
-        _ -> object.literal([#("theme", "light")])
-      })
-    })
-    let a0 = app.get_app()
-    let d0 = decode.new_primitive_decoder("Change", change_theme_from_dynamic)
-    let d1 = decode.new_primitive_decoder("Set", set_theme_from_dynamic)
-
-    use change_theme <- result.try(object.field(a0, "change_theme", d0))
-    use set_theme <- result.try(object.field(a0, "set_theme", d1))
-    let _ = change_theme(t0)
-    Ok(set_theme("index"))
-  }
-  Nil
-}
-
 pub fn page() -> JsObject {
   object.literal([
     #("openPage", open_page),
     #("kindToggle", kind_toggle),
+    #("themeToggle", theme_toggle),
   ])
-  |> object.set("onShow", on_show)
-  |> object.set("themeToggle", theme_toggle)
   |> object.set("data", init())
 }
