@@ -1,7 +1,6 @@
 import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/io
-import gleam/javascript/promise
 import gleam/result
 
 import wechat/app
@@ -31,7 +30,7 @@ fn bounding(rect: JsObject) -> Nil {
         let wrap = object.literal([#("wrap", True)])
         page.set_data(cp, wrap, fn() { Nil })
       }
-      _ -> promise.resolve(Ok(object.new()))
+      _ -> util.ignore()
     })
   }
   |> util.drain
