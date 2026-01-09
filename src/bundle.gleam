@@ -8,6 +8,9 @@ import wechat/page.{run_page}
 import app/app
 
 import app/pages/index/index
+import app/pages/button/button
+import app/pages/button_default/button_default
+import app/pages/button_bottom_fixed/button_bottom_fixed
 
 pub type Constructor =
   fn() -> JsObject
@@ -19,6 +22,9 @@ pub fn app() -> Result(Nil, Nil) {
 pub fn pages() -> List(#(String, Constructor)) {
   [
     #("index", index.page),
+    #("button", button.page),
+    #("button_default", button_default.page),
+    #("button_bottom_fixed", button_bottom_fixed.page),
   ]
 }
 

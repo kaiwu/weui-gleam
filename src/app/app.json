@@ -1,6 +1,9 @@
 {
   "pages":[
-    "pages/index/index"
+    "pages/index/index",
+    "pages/button/button",
+    "pages/button_default/button_default",
+    "pages/button_bottom_fixed/button_bottom_fixed"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -18,12 +21,5 @@
   "debug": true,
   "style": "v2",
   "darkmode": true,
-  "lazyCodeLoading": "requiredComponents",
-  "renderer": "skyline",
-  "rendererOptions": {
-    "skyline": {
-      "defaultDisplayBlock": true,
-      "defaultContentBox": true
-    }
-  }
+  "debug": true
 }
