@@ -7,6 +7,7 @@ import wechat/app
 import wechat/app_event
 import wechat/object.{type JsObject}
 import wechat/page
+import wechat/util
 
 pub type GlobalData {
   GlobalData(debug: Bool, theme: String)
@@ -16,7 +17,7 @@ pub type GlobalData {
 fn globaldata_from_dynamic(d: Dynamic) -> Result(GlobalData, GlobalData)
 
 fn change_theme(theme: JsObject) -> Nil {
-  let _ = {
+  {
     use t <- result.try(object.field(theme, "theme", decode.string))
     io.println("change theme to: " <> t)
 
@@ -31,11 +32,11 @@ fn change_theme(theme: JsObject) -> Nil {
     }
     Ok(r)
   }
-  Nil
+  |> util.drain
 }
 
 fn set_theme() -> Nil {
-  let _ = {
+  {
     let cp = page.current_page()
     use theme <- result.try(object.path_field(
       app.get_app(),
@@ -45,7 +46,7 @@ fn set_theme() -> Nil {
     let t = object.literal([#("theme", theme)])
     Ok(page.set_data(cp, t, fn() { Nil }))
   }
-  Nil
+  |> util.drain
 }
 
 fn on_launch() -> Nil {

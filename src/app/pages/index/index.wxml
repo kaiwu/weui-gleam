@@ -18,7 +18,7 @@
                             aria-expanded="{{item.open}}"
                         >
                             <view class="weui-flex__item">{{item.name}}</view>
-                            <!-- <image class="kind-list__img" src="images/icon_nav_{{item.id}}.png"></image> -->
+                            <!-- <image class="kind-list__img" src="../../images/icon_nav_{{item.id}}.png"></image> -->
                         </view>
                         <view
                             class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}"

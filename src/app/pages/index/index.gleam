@@ -12,6 +12,7 @@ import wechat/object.{
   type JsObject, type WechatCallback, type WechatResultCallback,
 }
 import wechat/page
+import wechat/util
 
 type Block {
   Block(id: String, name: String, open: Bool, pages: Array(String))
@@ -121,8 +122,8 @@ fn kind_toggle(e: JsObject) -> Nil {
     Ok(bs) -> {
       let cp = page.current_page()
       let ls = object.literal([#("list", array.from_list(bs))])
-      let _ = page.set_data(cp, ls, fn() { io.println("toggle kind done") })
-      Nil
+      page.set_data(cp, ls, fn() { io.println("toggle kind done") })
+      |> util.drain
     }
     Error(error) ->
       case error {
@@ -133,7 +134,7 @@ fn kind_toggle(e: JsObject) -> Nil {
 }
 
 fn theme_toggle(_e: JsObject) -> Nil {
-  let _ = {
+  {
     use t0 <- result.try({
       use t <- result.try(object.path_field(
         app.get_app(),
@@ -154,11 +155,11 @@ fn theme_toggle(_e: JsObject) -> Nil {
     ct(t0)
     Ok(st())
   }
-  Nil
+  |> util.drain
 }
 
 fn open_page(e: JsObject) -> Nil {
-  let _ = {
+  {
     use p <- promise.try_await(
       promise.resolve(object.path_field(
         e,
@@ -169,7 +170,7 @@ fn open_page(e: JsObject) -> Nil {
     let dest = "pages/" <> p <> "/" <> p
     base.navigate_to(dest, fn() { io.println("navigated to " <> p) })
   }
-  Nil
+  |> util.drain
 }
 
 pub fn page() -> JsObject {
