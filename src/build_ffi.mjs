@@ -1,5 +1,6 @@
 import { build, context } from 'esbuild'
 import { Ok, Error } from "./gleam.mjs"
+import { lessLoader } from 'esbuild-plugin-less';
 import copyStaticFiles from 'esbuild-copy-static-files'
 
 import path from 'path';
@@ -112,9 +113,10 @@ export function dir_build(src, out) {
 
 export function less_build(css, out) {
     return new Promise(resolve => {
+        let less = lessLoader({math:'always'}, {})
         build({
             entryPoints: [css],
-            plugins: [wxss],
+            plugins: [less],
             loader: { '.less': 'css' },
             outfile: out,
         }).then(function(r) {
@@ -209,9 +211,10 @@ export function dir_watch(src, out) {
 
 export function less_watch(css, out) {
     return new Promise(resolve => {
+        let less = lessLoader({math:'always'}, {})
         context({
             entryPoints: [css],
-            plugins: [wxss],
+            plugins: [less],
             loader: { '.less': 'css' },
             outfile: out,
         }).then(function(ctx) {
