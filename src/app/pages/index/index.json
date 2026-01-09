@@ -1,8 +1,3 @@
 {
-  "componentFramework": "glass-easel",
-  "usingComponents": {
-    "mp-navigation-bar": "../../components/navigation_bar/navigation_bar",
-    "mp-cell": "../../components/cell/cell"
-  }
+    "componentFramework": "glass-easel"
 }
-

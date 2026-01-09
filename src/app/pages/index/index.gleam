@@ -39,28 +39,32 @@ fn init() -> JsObject {
         name: "表单",
         open: False,
         pages: array.from_list([
-          "cell",
-          "slideview",
+          "button",
           "form",
+          "list",
+          "slideview",
+          "slider",
           "uploader",
         ]),
       ),
       Block(
-        id: "widget",
+        id: "layout",
         name: "基础组件",
         open: False,
         pages: array.from_list([
           "article",
-          "icons",
           "badge",
           "flex",
           "footer",
           "gallery",
           "grid",
-          "loadmore",
+          "icons",
           "loading",
+          "loadmore",
           "panel",
           "preview",
+          "progress",
+          "steps",
         ]),
       ),
       Block(
@@ -68,11 +72,13 @@ fn init() -> JsObject {
         name: "操作反馈",
         open: False,
         pages: array.from_list([
-          "dialog",
-          "msg",
-          "half-screen-dialog",
           "actionsheet",
-          "toptips",
+          "dialog",
+          "half-screen-dialog",
+          "msg",
+          "picker",
+          "toast",
+          "information-bar",
         ]),
       ),
       Block(
@@ -80,7 +86,7 @@ fn init() -> JsObject {
         name: "导航相关",
         open: False,
         pages: array.from_list([
-          "navigation",
+          "navigation-bar",
           "tabbar",
         ]),
       ),
@@ -177,7 +183,7 @@ pub fn page() -> JsObject {
   object.literal([
     #("openPage", open_page),
     #("kindToggle", kind_toggle),
-    #("themeToggle", theme_toggle),
+    #("changeTheme", theme_toggle),
   ])
   |> object.set("data", init())
 }
