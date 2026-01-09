@@ -2,7 +2,7 @@
     <mp-navigation-bar title="小程序UI组件库" back="{{false}}" />
     <scroll-view type="list" scroll-y class="page-height">
         <view class="page__hd">
-            <view class="page__title">小程序UI组件库</view>
+            <view class="page__title">Gleam 小程序UI组件库</view>
             <view class="page__desc">小程序UI组件库是基于WeUI封装的组件库，是一套同微信原生视觉体验一致的组件库，由微信官方设计团队和小程序团队为微信小程序量身设计，令用户的使用感知更加统一。</view>
         </view>
         <view class="page__bd page__bd_spacing">
@@ -18,7 +18,7 @@
                             aria-expanded="{{item.open}}"
                         >
                             <view class="weui-flex__item">{{item.name}}</view>
-                            <!-- <image class="kind-list__img" src="../../images/icon_nav_{{item.id}}.png"></image> -->
+                            <image class="kind-list__img" src="../../images/icon_nav_{{item.id}}.png"></image>
                         </view>
                         <view
                             class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}"
