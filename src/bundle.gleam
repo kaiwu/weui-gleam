@@ -7,10 +7,10 @@ import wechat/page.{run_page}
 
 import app/app
 
-import app/pages/index/index
 import app/pages/button/button
-import app/pages/button_default/button_default
 import app/pages/button_bottom_fixed/button_bottom_fixed
+import app/pages/button_default/button_default
+import app/pages/index/index
 
 pub type Constructor =
   fn() -> JsObject
