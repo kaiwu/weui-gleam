@@ -9,9 +9,24 @@ fn init() -> JsObject {
   ])
 }
 
+fn close() -> Nil {
+  Nil
+}
+
+fn open_ios() -> Nil {
+  Nil
+}
+
+fn open_android() -> Nil {
+  Nil
+}
+
 pub fn page() -> JsObject {
   object.literal([
     #("onShow", common.on_show),
+    #("close", close),
+    #("openIOS", open_ios),
+    #("openAndroid", open_android),
   ])
   |> object.set("data", init())
 }

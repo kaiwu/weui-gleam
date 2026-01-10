@@ -13,5 +13,6 @@ pub fn page() -> JsObject {
   object.literal([
     #("onShow", common.on_show),
   ])
+  |> object.set("onLoad", common.on_load)
   |> object.set("data", init())
 }

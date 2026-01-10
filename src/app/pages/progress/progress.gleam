@@ -9,9 +9,14 @@ fn init() -> JsObject {
   ])
 }
 
+fn upload() -> Nil {
+  Nil
+}
+
 pub fn page() -> JsObject {
   object.literal([
     #("onShow", common.on_show),
+    #("upload", upload),
   ])
   |> object.set("data", init())
 }
