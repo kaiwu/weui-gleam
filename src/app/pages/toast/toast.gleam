@@ -14,37 +14,150 @@ fn init() -> JsObject {
   ])
 }
 
+fn timeout_work2(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let _ = page.set_data(cp, o, fn() { Nil })
+  }
+  |> util.drain
+}
+
+fn timeout_work1(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let t2 = object.literal([#("toast", False), #("hideToast", False)])
+    use _ <- promise.await(page.set_data(cp, o, fn() { Nil }))
+    promise.resolve(app.set_timeout(300, t2, timeout_work2))
+  }
+  |> util.drain
+}
+
 fn open_toast() -> Nil {
   {
     let cp = page.current_page()
     let t0 = object.literal([#("toast", True)])
     let t1 = object.literal([#("hideToast", True)])
-    let t2 = object.literal([#("toast", False), #("hideToast", False)])
-    let empty = object.new()
     use _ <- promise.await(page.set_data(cp, t0, fn() { Nil }))
-    {
-      use _ <- app.set_timeout(300, empty)
-      todo
-    }
-    |> promise.resolve()
+    promise.resolve(app.set_timeout(300, t1, timeout_work1))
+  }
+  |> util.drain
+}
+
+fn timeout_warn_work2(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let _ = page.set_data(cp, o, fn() { Nil })
+  }
+  |> util.drain
+}
+
+fn timeout_warn_work1(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let t2 = object.literal([#("warnToast", False), #("hidewarnToast", False)])
+    use _ <- promise.await(page.set_data(cp, o, fn() { Nil }))
+    promise.resolve(app.set_timeout(300, t2, timeout_warn_work2))
   }
   |> util.drain
 }
 
 fn open_warn_toast() -> Nil {
-  Nil
+  {
+    let cp = page.current_page()
+    let t0 = object.literal([#("warnToast", True)])
+    let t1 = object.literal([#("hidewarnToast", True)])
+    use _ <- promise.await(page.set_data(cp, t0, fn() { Nil }))
+    promise.resolve(app.set_timeout(3000, t1, timeout_warn_work1))
+  }
+  |> util.drain
+}
+
+fn timeout_text_more_work2(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let _ = page.set_data(cp, o, fn() { Nil })
+  }
+  |> util.drain
+}
+
+fn timeout_text_more_work1(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let t2 =
+      object.literal([#("textMoreToast", False), #("hideTextMoreToast", False)])
+    use _ <- promise.await(page.set_data(cp, o, fn() { Nil }))
+    promise.resolve(app.set_timeout(300, t2, timeout_text_more_work2))
+  }
+  |> util.drain
 }
 
 fn open_text_more_toast() -> Nil {
-  Nil
+  {
+    let cp = page.current_page()
+    let t0 = object.literal([#("textMoreToast", True)])
+    let t1 = object.literal([#("hideTextMoreToast", True)])
+    use _ <- promise.await(page.set_data(cp, t0, fn() { Nil }))
+    promise.resolve(app.set_timeout(3000, t1, timeout_text_more_work1))
+  }
+  |> util.drain
+}
+
+fn timeout_text_work2(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let _ = page.set_data(cp, o, fn() { Nil })
+  }
+  |> util.drain
+}
+
+fn timeout_text_work1(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let t2 = object.literal([#("textToast", False), #("hideTextToast", False)])
+    use _ <- promise.await(page.set_data(cp, o, fn() { Nil }))
+    promise.resolve(app.set_timeout(300, t2, timeout_text_work2))
+  }
+  |> util.drain
 }
 
 fn open_text_toast() -> Nil {
-  Nil
+  {
+    let cp = page.current_page()
+    let t0 = object.literal([#("textToast", True)])
+    let t1 = object.literal([#("hideTextToast", True)])
+    use _ <- promise.await(page.set_data(cp, t0, fn() { Nil }))
+    promise.resolve(app.set_timeout(3000, t1, timeout_text_work1))
+  }
+  |> util.drain
+}
+
+fn timeout_loading_work2(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let _ = page.set_data(cp, o, fn() { Nil })
+  }
+  |> util.drain
+}
+
+fn timeout_loading_work1(o: JsObject) -> Nil {
+  {
+    let cp = page.current_page()
+    let t2 = object.literal([#("loading", False), #("hideLoading", False)])
+    use _ <- promise.await(page.set_data(cp, o, fn() { Nil }))
+    promise.resolve(app.set_timeout(300, t2, timeout_loading_work2))
+  }
+  |> util.drain
 }
 
 fn open_loading() -> Nil {
-  Nil
+  {
+    let cp = page.current_page()
+    let t0 = object.literal([#("loading", True)])
+    let t1 = object.literal([#("hideLoading", True)])
+    use _ <- promise.await(page.set_data(cp, t0, fn() { Nil }))
+    promise.resolve(app.set_timeout(3000, t1, timeout_loading_work1))
+  }
+  |> util.drain
 }
 
 pub fn page() -> JsObject {

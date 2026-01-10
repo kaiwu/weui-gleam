@@ -38,7 +38,13 @@ import app/pages/input/input
 import app/pages/list/list as pagelist
 import app/pages/loading/loading
 import app/pages/loadmore/loadmore
+import app/pages/msg/msg
+import app/pages/msg_custom_area_cell/msg_custom_area_cell
+import app/pages/msg_custom_area_preview/msg_custom_area_preview
+import app/pages/msg_custom_area_tips/msg_custom_area_tips
 import app/pages/msg_success/msg_success
+import app/pages/msg_text/msg_text
+import app/pages/msg_text_primary/msg_text_primary
 import app/pages/msg_warn/msg_warn
 import app/pages/navbar/navbar
 import app/pages/navigation_bar/navigation_bar
@@ -46,6 +52,11 @@ import app/pages/panel/panel
 import app/pages/picker/picker
 import app/pages/preview/preview
 import app/pages/progress/progress
+import app/pages/searchbar/searchbar
+import app/pages/searchbar_filled/searchbar_filled
+import app/pages/searchbar_grey/searchbar_grey
+import app/pages/searchbar_homepage/searchbar_homepage
+import app/pages/searchbar_outlined/searchbar_outlined
 import app/pages/slider/slider
 import app/pages/slideview/slideview
 import app/pages/steps/steps
@@ -96,7 +107,13 @@ pub fn pages() -> List(#(String, Constructor)) {
     #("list", pagelist.page),
     #("loading", loading.page),
     #("loadmore", loadmore.page),
+    #("msg", msg.page),
+    #("msg_custom_area_cell", msg_custom_area_cell.page),
+    #("msg_custom_area_preview", msg_custom_area_preview.page),
+    #("msg_custom_area_tips", msg_custom_area_tips.page),
     #("msg_success", msg_success.page),
+    #("msg_text", msg_text.page),
+    #("msg_text_primary", msg_text_primary.page),
     #("msg_warn", msg_warn.page),
     #("navbar", navbar.page),
     #("navigation_bar", navigation_bar.page),
@@ -104,6 +121,11 @@ pub fn pages() -> List(#(String, Constructor)) {
     #("picker", picker.page),
     #("preview", preview.page),
     #("progress", progress.page),
+    #("searchbar", searchbar.page),
+    #("searchbar_filled", searchbar_filled.page),
+    #("searchbar_grey", searchbar_grey.page),
+    #("searchbar_homepage", searchbar_homepage.page),
+    #("searchbar_outlined", searchbar_outlined.page),
     #("slider", slider.page),
     #("slideview", slideview.page),
     #("steps", steps.page),

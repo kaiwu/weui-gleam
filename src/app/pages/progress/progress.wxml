@@ -7,12 +7,12 @@
 	<view class="page__bd page__bd_spacing">
 		<view class="weui-progress">
 			<view class="weui-progress__bar">
-				<view class="weui-progress__inner-bar js_progress" style="width: 0%;"></view>
+				<view class="weui-progress__inner-bar js_progress" style="width: {{progress}}%;"></view>
 			</view>
 			<navigator class="weui-wa-hotarea weui-progress__opr" aria-role="button" url="javascript:">
 				<text aria-label="取消" class="weui-icon-cancel" aria-role="img"></text>
 			</navigator>
-			<text id="js_current" class="weui-hidden_abs" aria-role="alert">0%</text>
+			<text id="js_current" class="weui-hidden_abs" aria-role="alert">{{progress}}%</text>
 		</view>
 
 		<view class="weui-progress">
@@ -35,7 +35,7 @@
 			<text id="js_current" class="weui-hidden_abs" aria-role="alert">80%</text>
 		</view>
 		<view class="weui-btn-area">
-			<button type="button" class="weui-btn weui-btn_primary" id="btnUpload">上传</button>
+			<button type="button" class="weui-btn weui-btn_primary" id="btnUpload" disabled="{{disabled}}" bindtap="upload">上传</button>
 		</view>
 	</view>
 </view>

@@ -1,4 +1,4 @@
-{
+    {
     "pages": [
         "pages/index/index",
         "pages/button/button",
@@ -31,7 +31,13 @@
         "pages/list/list",
         "pages/loading/loading",
         "pages/loadmore/loadmore",
+        "pages/msg/msg",
+        "pages/msg_custom_area_cell/msg_custom_area_cell",
+        "pages/msg_custom_area_preview/msg_custom_area_preview",
+        "pages/msg_custom_area_tips/msg_custom_area_tips",
         "pages/msg_success/msg_success",
+        "pages/msg_text/msg_text",
+        "pages/msg_text_primary/msg_text_primary",
         "pages/msg_warn/msg_warn",
         "pages/navbar/navbar",
         "pages/navigation_bar/navigation_bar",
@@ -39,6 +45,11 @@
         "pages/picker/picker",
         "pages/preview/preview",
         "pages/progress/progress",
+        "pages/searchbar/searchbar",
+        "pages/searchbar_filled/searchbar_filled",
+        "pages/searchbar_grey/searchbar_grey",
+        "pages/searchbar_homepage/searchbar_homepage",
+        "pages/searchbar_outlined/searchbar_outlined",
         "pages/slider/slider",
         "pages/slideview/slideview",
         "pages/steps/steps",
