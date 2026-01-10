@@ -1,22 +1,55 @@
 import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
+import gleam/io
 import gleam/result
 
 import wechat/app
-import wechat/object.{type JsObject, type WechatCallback}
+import wechat/object.{type JsObject}
+import wechat/page
 import wechat/util
 
-@external(javascript, "../../app_ffi.mjs", "generic_decoder")
-fn set_theme(d: Dynamic) -> Result(WechatCallback, WechatCallback)
+pub type GlobalData {
+  GlobalData(debug: Bool, theme: String)
+}
 
-pub fn on_show() -> Nil {
+@external(javascript, "../../app_ffi.mjs", "generic_decoder")
+fn globaldata_from_dynamic(d: Dynamic) -> Result(GlobalData, GlobalData)
+
+pub fn change_theme(theme: JsObject) -> Nil {
   {
-    let app = app.get_app()
-    let decoder = decode.new_primitive_decoder("set_theme", set_theme)
-    use set_theme <- result.try(object.field(app, "set_theme", decoder))
-    Ok(set_theme())
+    use t <- result.try(object.field(theme, "theme", decode.string))
+    io.println("change theme to: " <> t)
+
+    use g <- result.try(object.field(
+      app.get_app(),
+      "data",
+      decode.new_primitive_decoder("GlobalData", globaldata_from_dynamic),
+    ))
+    let r = case g.theme {
+      t0 if t0 != t -> app.get_app() |> object.mutate("data.theme", t)
+      _ -> object.new()
+    }
+    Ok(r)
   }
   |> util.drain
+}
+
+pub fn set_theme() -> Nil {
+  {
+    let cp = page.current_page()
+    use theme <- result.try(object.path_field(
+      app.get_app(),
+      "data.theme",
+      decode.string,
+    ))
+    let t = object.literal([#("theme", theme)])
+    Ok(page.set_data(cp, t, fn() { Nil }))
+  }
+  |> util.drain
+}
+
+pub fn on_show() -> Nil {
+  set_theme()
 }
 
 pub fn on_load(_query: JsObject) -> Nil {

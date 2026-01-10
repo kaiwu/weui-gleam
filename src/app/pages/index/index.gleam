@@ -2,15 +2,12 @@ import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/io
 import gleam/javascript/array.{type Array}
-import gleam/javascript/promise
 import gleam/list
 import gleam/result
 
+import app/pages/common
 import wechat/app
-import wechat/base
-import wechat/object.{
-  type JsObject, type WechatCallback, type WechatResultCallback,
-}
+import wechat/object.{type JsObject}
 import wechat/page
 import wechat/util
 
@@ -20,14 +17,6 @@ type Block {
 
 @external(javascript, "../../../app_ffi.mjs", "generic_decoder")
 fn block_from_dynamic(d: Dynamic) -> Result(Block, Block)
-
-@external(javascript, "../../../app_ffi.mjs", "generic_decoder")
-fn change_theme(
-  d: Dynamic,
-) -> Result(WechatResultCallback, WechatResultCallback)
-
-@external(javascript, "../../../app_ffi.mjs", "generic_decoder")
-fn set_theme(d: Dynamic) -> Result(WechatCallback, WechatCallback)
 
 fn init() -> JsObject {
   object.new()
@@ -152,36 +141,14 @@ fn theme_toggle(_e: JsObject) -> Nil {
         _ -> object.literal([#("theme", "light")])
       })
     })
-    let a0 = app.get_app()
-    let d0 = decode.new_primitive_decoder("Change", change_theme)
-    let d1 = decode.new_primitive_decoder("Set", set_theme)
-
-    use ct <- result.try(object.field(a0, "change_theme", d0))
-    use st <- result.try(object.field(a0, "set_theme", d1))
-    ct(t0)
-    Ok(st())
-  }
-  |> util.drain
-}
-
-fn open_page(e: JsObject) -> Nil {
-  {
-    use p <- promise.try_await(
-      promise.resolve(object.path_field(
-        e,
-        "currentTarget.dataset.page",
-        decode.string,
-      )),
-    )
-    let dest = "pages/" <> p <> "/" <> p
-    base.navigate_to(dest, fn() { io.println("navigated to " <> p) })
+    common.change_theme(t0)
+    Ok(common.set_theme())
   }
   |> util.drain
 }
 
 pub fn page() -> JsObject {
   object.literal([
-    #("openPage", open_page),
     #("kindToggle", kind_toggle),
     #("changeTheme", theme_toggle),
   ])
