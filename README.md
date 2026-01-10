@@ -1,13 +1,28 @@
-# weui_gleam
+## Gleam WeUI
 
-[![Package Version](https://img.shields.io/hexpm/v/weui_gleam)](https://hex.pm/packages/weui_gleam)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/weui_gleam/)
+This is the gleam implementaion of [WeUI](https://github.com/Tencent/weui-wxss)
 
-Further documentation can be found at <https://hexdocs.pm/weui_gleam>.
+## Why Gleam
+
+- **Concise**: Clean and expressive syntax that reduces boilerplate
+- **Compiler friendly**: Fast compiler with great LSP capabilities
+- **Spot errors in compile time**: Catch bugs before runtime with the static type system
+- **Super good fit for AI**: Predictable structure makes it ideal for AI-assisted development
+
+Ok, I am the human being behind the project, thanks AI for above summaries.
+They are nice words and AI is right and most of the project is written by
+Claude Opus 4.5 and GLM 4.7. 
+
+Meanwhile let me add a bit human touch: I just *hate* javascript.
+
+One can finish majority tasks totally in gleam. And fallback to ffis for some
+*component* related functionalities, since wechat miniprogram does some heavy
+mixins there and there is no easy way to get the specific component besides using
+`this`. Check the example in `components_ffi.mjs` for references. 
 
 ## Development
 
 ```sh
-gleam run   # Run the project
-gleam test  # Run the tests
+npm run build  # Build the project
+npm run watch  # Watch build the project
 ```
