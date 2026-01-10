@@ -18,15 +18,20 @@ fn init() -> JsObject {
 }
 
 fn upload_next(progress: Int) -> Nil {
+  let cp = page.current_page()
   case progress {
     p if p >= 100 -> {
-      let cp = page.current_page()
-      let d0 = object.literal([#("disabled", False)])
+      let d0 =
+        object.new()
+        |> object.set("disabled", False)
+        |> object.set("progress", 0)
       let _ = page.set_data(cp, d0, fn() { Nil })
       Nil
     }
     other -> {
       let empty = object.new()
+      let d0 = object.literal([#("progress", other)])
+      let _ = page.set_data(cp, d0, fn() { Nil })
       let _ = app.set_timeout(20, empty, fn(_o) { upload_next(other + 1) })
       Nil
     }
