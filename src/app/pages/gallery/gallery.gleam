@@ -1,4 +1,6 @@
 import wechat/object.{type JsObject}
+import wechat/page
+import wechat/util
 
 import app/pages/common
 
@@ -7,14 +9,25 @@ fn init() -> JsObject {
     #("theme", "light"),
     #("mode", ""),
   ])
+  |> object.set("gallery", False)
 }
 
 fn close() -> Nil {
-  Nil
+  {
+    let cp = page.current_page()
+    let d = object.literal([#("gallery", False)])
+    Ok(page.set_data(cp, d, fn() { Nil }))
+  }
+  |> util.drain
 }
 
 fn open() -> Nil {
-  Nil
+  {
+    let cp = page.current_page()
+    let d = object.literal([#("gallery", True)])
+    Ok(page.set_data(cp, d, fn() { Nil }))
+  }
+  |> util.drain
 }
 
 pub fn page() -> JsObject {
