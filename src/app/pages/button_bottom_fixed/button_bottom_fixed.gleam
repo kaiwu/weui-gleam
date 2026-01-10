@@ -1,16 +1,13 @@
-import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/io
 import gleam/result
 
-import wechat/app
-import wechat/object.{type JsObject, type WechatCallback}
+import wechat/object.{type JsObject}
 import wechat/page
 import wechat/util
 import wechat/wxml
 
-@external(javascript, "../../../app_ffi.mjs", "generic_decoder")
-fn set_theme(d: Dynamic) -> Result(WechatCallback, WechatCallback)
+import app/pages/common
 
 fn init() -> JsObject {
   object.literal([
@@ -41,12 +38,7 @@ fn check_box_change() -> Nil {
 }
 
 fn on_show() -> Nil {
-  let _ = {
-    let app = app.get_app()
-    let decoder = decode.new_primitive_decoder("set_theme", set_theme)
-    use set_theme <- result.try(object.field(app, "set_theme", decoder))
-    Ok(set_theme())
-  }
+  common.on_show()
   wxml.create_selector_query()
   |> wxml.selector_query_select("#js_btn")
   |> wxml.nodes_ref_bounding_client_rect(bounding)
