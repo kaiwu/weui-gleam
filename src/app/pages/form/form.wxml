@@ -1,0 +1,20 @@
+<page-meta root-font-size="system"/>
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+    <view class="page__hd">
+        <view class="page__title">Form</view>
+        <view class="page__desc">表单页</view>
+    </view>
+    <view class="page__bd page__bd_spacing">
+        <view aria-role="button" bindtap="openFormPage" class="weui-btn weui-btn_default">表单结构</view>
+        <view aria-role="button" bindtap="openFormInputStatus" class="weui-btn weui-btn_default">输入框状态</view>
+        <view aria-role="button" bindtap="openFormVcode" class="weui-btn weui-btn_default">验证码</view>
+        <view aria-role="button" bindtap="openFormBottomFixed" class="weui-btn weui-btn_default">底部悬浮</view>
+        <view aria-role="button" bindtap="openFormAccess" class="weui-btn weui-btn_default">跳转列表项</view>
+        <view aria-role="button" bindtap="openFormCheckbox" class="weui-btn weui-btn_default">复选框</view>
+        <view aria-role="button" bindtap="openFormRadio" class="weui-btn weui-btn_default">单选框</view>
+        <view aria-role="button" bindtap="openFormSwitch" class="weui-btn weui-btn_default">开关</view>
+        <view aria-role="button" bindtap="openFormSelect" class="weui-btn weui-btn_default">选择框</view>
+        <view aria-role="button" bindtap="openFormTextarea" class="weui-btn weui-btn_default">文本域</view>
+        <view aria-role="button" bindtap="openFormVertical" class="weui-btn weui-btn_default">上下结构</view>
+    </view>
+</view>

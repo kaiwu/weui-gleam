@@ -2,14 +2,13 @@
 
 The following pages from wxss project are missing in gleam project:
 
-- dialog
-- form
-- half-screen-dialog
 - msg
-- navbar
+- msg_custom_area_cell
+- msg_custom_area_preview
+- msg_custom_area_tips
+- msg_text
+- msg_text_primary
 - searchbar
-- tabbar
-- uploader
 
 # TODO - Unfinished Stubs
 

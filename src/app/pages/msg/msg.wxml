@@ -1,0 +1,18 @@
+<page-meta root-font-size="system"/>
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+    <view class="page__hd">
+        <view class="page__title">Msg</view>
+        <view class="page__desc">提示页</view>
+    </view>
+    <view class="page__bd">
+        <view class="weui-btn-area">
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openMsgSuccess">成功提示页</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openMsgWarn">失败提示页</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openMsgText">无图标提示页</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openMsgTextPrimary">无图标提示页</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openMsgCustomAreaPreview">key-value列表场景</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openMsgCustomAreaTips">提示列表场景</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openMsgCustomAreaCell">跳转列表场景</view>
+        </view>
+    </view>
+</view>
