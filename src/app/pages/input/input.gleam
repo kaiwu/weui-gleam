@@ -130,20 +130,10 @@ pub fn checkbox_change(e: JsObject) -> Nil {
   |> util.drain
 }
 
-fn bind_date_change(e: JsObject) -> Nil {
-  echo e
-  Nil
-}
-
-fn bind_time_change(e: JsObject) -> Nil {
-  echo e
-  Nil
-}
-
 fn bind_country_code_change(e: JsObject) -> Nil {
   echo object.field(e, "detail.value", decode.int)
     |> result.try(fn(a) {
-      let d = object.literal([]) |> object.set("countryCodeIndex", a)
+      let d = object.literal([#("countryCodeIndex", a)])
       let cp = page.current_page()
       Ok(page.set_data(cp, d, fn() { Nil }))
     })
@@ -153,7 +143,7 @@ fn bind_country_code_change(e: JsObject) -> Nil {
 fn bind_country_change(e: JsObject) -> Nil {
   echo object.field(e, "detail.value", decode.int)
     |> result.try(fn(a) {
-      let d = object.literal([]) |> object.set("countryIndex", a)
+      let d = object.literal([#("countryIndex", a)])
       let cp = page.current_page()
       Ok(page.set_data(cp, d, fn() { Nil }))
     })
@@ -163,31 +153,21 @@ fn bind_country_change(e: JsObject) -> Nil {
 fn bind_account_change(e: JsObject) -> Nil {
   echo object.field(e, "detail.value", decode.int)
     |> result.try(fn(a) {
-      let d = object.literal([]) |> object.set("accountIndex", a)
+      let d = object.literal([#("accountIndex", a)])
       let cp = page.current_page()
       Ok(page.set_data(cp, d, fn() { Nil }))
     })
     |> util.drain
 }
 
-fn bind_agree_change(e: JsObject) -> Nil {
-  echo e
-  Nil
-}
-
 pub fn page() -> JsObject {
-  object.literal([
-    #("bindPickerChange", bind_date_change),
-    #("bindTimeChange", bind_time_change),
-  ])
+  object.new()
   |> object.set("onShow", common.on_show)
   |> object.set("showTopTips", show_top_tips)
   |> object.set("radioChange", radio_change)
   |> object.set("checkboxChange", checkbox_change)
-  |> object.set("bindDateChange", bind_date_change)
   |> object.set("bindCountryCodeChange", bind_country_code_change)
   |> object.set("bindCountryChange", bind_country_change)
   |> object.set("bindAccountChange", bind_account_change)
-  |> object.set("bindAgreeChange", bind_agree_change)
   |> object.set("data", init())
 }
