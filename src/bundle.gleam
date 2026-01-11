@@ -7,6 +7,9 @@ import wechat/page.{run_page}
 
 import app/app
 
+import app/components/cell/cell
+import app/components/cells/cells
+
 import app/pages/actionsheet/actionsheet
 import app/pages/article/article
 import app/pages/badge/badge
@@ -139,7 +142,10 @@ pub fn pages() -> List(#(String, Constructor)) {
 }
 
 pub fn components() -> List(#(String, Constructor)) {
-  []
+  [
+    #("cell", cell.component),
+    #("cells", cells.component),
+  ]
 }
 
 pub fn page(ps: List(#(String, Constructor)), p: String) -> Result(Nil, Nil) {
