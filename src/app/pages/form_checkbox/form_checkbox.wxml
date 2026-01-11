@@ -13,14 +13,14 @@
                               <view class="weui-cell__hd">
                                   <checkbox
                                       class="weui-check"
-                                      value="{{item.name}}"
+                                      value="{{item.value}}"
                                       checked="{{item.checked}}"
                                       disabled="{{item.disabled}}"
                                   />
                                   <i class="weui-icon-checked"></i>
                               </view>
                               <view class="weui-cell__bd">
-                                  <view>{{item.value}}</view>
+                                  <view>{{item.name}}</view>
                               </view>
                           </label>
                       </checkbox-group>

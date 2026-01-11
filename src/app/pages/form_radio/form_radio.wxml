@@ -11,12 +11,12 @@
                       <radio-group class="radio-group" bindchange="radioChange">
                           <label class="weui-cell weui-cell_active weui-check__label" wx:for="{{items}}" wx:key="name">
                               <view class="weui-cell__bd">
-                                  <view>{{item.value}}</view>
+                                  <view>{{item.name}}</view>
                               </view>
                               <view class="weui-cell__ft">
                                   <radio
                                       class="weui-check"
-                                      value="{{item.name}}"
+                                      value="{{item.value}}"
                                       checked="{{item.checked}}"
                                   />
                                   <i class="weui-icon-checked"></i>
