@@ -63,11 +63,11 @@ fn init() -> JsObject {
         pages: array.from_list([
           "actionsheet",
           "dialog",
-          "half-screen-dialog",
+          "half_screen_dialog",
           "msg",
           "picker",
           "toast",
-          "information-bar",
+          "information_bar",
         ]),
       ),
       Block(
@@ -75,7 +75,7 @@ fn init() -> JsObject {
         name: "导航相关",
         open: False,
         pages: array.from_list([
-          "navigation-bar",
+          "navigation_bar",
           "tabbar",
         ]),
       ),
