@@ -1,4 +1,9 @@
+import gleam/dynamic/decode
+import gleam/result
+
 import wechat/object.{type JsObject}
+import wechat/page
+import wechat/util
 
 import app/pages/common
 
@@ -12,16 +17,34 @@ fn init() -> JsObject {
 }
 
 fn blur_input() -> Nil {
-  Nil
+  {
+    let cp = page.current_page()
+    let d = object.literal([#("isFocus", False)])
+    Ok(page.set_data(cp, d, fn() { Nil }))
+  }
+  |> util.drain
 }
 
 fn clear_input() -> Nil {
-  Nil
+  {
+    let cp = page.current_page()
+    let d = object.literal([]) |> object.set("inputVal", "")
+    Ok(page.set_data(cp, d, fn() { Nil }))
+  }
+  |> util.drain
 }
 
 fn input_typing(e: JsObject) -> Nil {
-  echo e
-  Nil
+  {
+    let cp = page.current_page()
+    use value <- result.try(object.path_field(e, "detail.value", decode.string))
+    let d =
+      object.new()
+      |> object.set("inputVal", value)
+      |> object.set("isFocus", True)
+    Ok(page.set_data(cp, d, fn() { Nil }))
+  }
+  |> util.drain
 }
 
 pub fn page() -> JsObject {
